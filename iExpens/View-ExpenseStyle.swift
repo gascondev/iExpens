@@ -11,11 +11,11 @@ import SwiftUI
 extension View {
     func style(for item: ExpenseItem) -> some View {
         if item.amount < 10 {
-            return self.foregroundStyle(.yellow)
+            return AnyView(self.foregroundStyle(.green).font(.title3))
         } else if item.amount < 100 {
-            return self.foregroundStyle(.orange)
+            return AnyView(self.foregroundStyle(.orange).font(.title2))
         } else {
-            return self.foregroundStyle(.red)
+            return AnyView(self.foregroundStyle(.red).font(.title))
         }
     }
 }

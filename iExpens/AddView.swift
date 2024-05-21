@@ -23,16 +23,23 @@ struct AddView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Name", text: $name)
-                
-                Picker("Type", selection: $type) {
-                    ForEach(types, id: \.self) {
-                        Text($0)
-                    }
+                Section("") {
+                    TextField("Name", text: $name)
                 }
                 
-                TextField("Amount", value: $amount, format: .currency(code: localCurrency))
-                    .keyboardType(.decimalPad)
+                Section("Category:") {
+                    Picker("Type", selection: $type) {
+                        ForEach(types, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
+                Section("Amount:") {
+                    TextField("Amount", value: $amount, format: .currency(code: localCurrency))
+                        .keyboardType(.decimalPad)
+                }
             }
             .navigationTitle("Add new expense")
             .toolbar {

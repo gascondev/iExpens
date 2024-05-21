@@ -15,20 +15,25 @@ struct ContentView: View {
     
     
     var body: some View {
-        NavigationStack {
-            List {
-                ExpenseSection(title: "Business", expenses: expenses.businessItems, deleteItems: removeBusinessItems)
-                ExpenseSection(title: "Personal", expenses: expenses.personalItems, deleteItems: removePersonalItems)
-            }
-            .navigationTitle("iExpense")
-            .toolbar {
-                Button("Add expense", systemImage: "plus") {
-                    showingAddExpense = true
+        
+        ZStack {
+            Color.red
+                .edgesIgnoringSafeArea(.all)
+            NavigationStack {
+                List {
+                    ExpenseSection(title: "Business", expenses: expenses.businessItems, deleteItems: removeBusinessItems)
+                    ExpenseSection(title: "Personal", expenses: expenses.personalItems, deleteItems: removePersonalItems)
+                }
+                .navigationTitle("💸 iExpense 💸")
+                .toolbar {
+                    Button("Add expense", systemImage: "plus") {
+                        showingAddExpense = true
+                    }
                 }
             }
-        }
-        .sheet(isPresented: $showingAddExpense) {
-            AddView(expenses: expenses)
+            .sheet(isPresented: $showingAddExpense) {
+                AddView(expenses: expenses)
+            }
         }
     }
     
