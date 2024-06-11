@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddView: View {
+    @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
     @State private var name = ""
@@ -16,36 +17,29 @@ struct AddView: View {
     
     let localCurrency = Locale.current.currency?.identifier ?? "EUR"
     
-    var expenses: Expenses
     
-    let types = ["Business", "Personal"]
+    static let types = ["Business", "Personal"]
     
     var body: some View {
         NavigationStack {
             Form {
-                Section("") {
-                    TextField("Name", text: $name)
-                }
+                TextField("Name", text: $name)
                 
-                Section("Category:") {
-                    Picker("Type", selection: $type) {
-                        ForEach(types, id: \.self) {
-                            Text($0)
-                        }
+                Picker("Type", selection: $type) {
+                    ForEach(Self.types, id: \.self) {
+                        Text($0)
                     }
-                    .pickerStyle(.segmented)
                 }
+                .pickerStyle(.segmented)
                 
-                Section("Amount:") {
-                    TextField("Amount", value: $amount, format: .currency(code: localCurrency))
-                        .keyboardType(.decimalPad)
-                }
+                TextField("Amount", value: $amount, format: .currency(code: localCurrency))
+                    .keyboardType(.decimalPad)
             }
             .navigationTitle("Add new expense")
             .toolbar {
                 Button("Save") {
                     let item = ExpenseItem(name: name, type: type, amount: amount)
-                    expenses.items.append(item)
+                    modelContext.insert(item)
                     dismiss()
                 }
             }
@@ -54,5 +48,6 @@ struct AddView: View {
 }
 
 #Preview {
-    AddView(expenses: Expenses())
+    AddView()
+        .modelContainer(for: ExpenseItem.self)
 }
